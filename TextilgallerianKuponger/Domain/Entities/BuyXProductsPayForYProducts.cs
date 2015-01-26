@@ -12,14 +12,10 @@ namespace Domain.Entities
     public class BuyXProductsPayForYProducts : ProductCoupon
     {
 
-        /// <summary>
-        /// How many products customer need to buy
-        /// </summary>
+        // How many products customer need to buy
         public int Buy { get; set; }
 
-        /// <summary>
-        /// How many free products
-        /// </summary>
+        // How many free products
         public int PayFor { get; set; }
 
         public override Cart IsValidFor(Cart cart)

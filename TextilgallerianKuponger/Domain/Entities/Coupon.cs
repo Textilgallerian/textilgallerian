@@ -47,9 +47,7 @@ namespace Domain.Entities
         /// </summary>
         public List<Customer> CustomersUsedBy { get; set; }
 
-        /// <summary>
-        /// Max amount of times that a customer is allowed to use the coupon
-        /// </summary>
+        //Max amount of times that a customer is allowed to use the coupon
         public int UseLimit { get; set; }
 
         /// <summary>
