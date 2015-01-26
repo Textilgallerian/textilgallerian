@@ -13,6 +13,11 @@ namespace Domain.Entities
     {
         public String Code { get; set; }
 
+        public String Type
+        {
+            get { return GetType().Name; }
+        }
+
         public DateTime Start { get; set; }
         // End is set to null if Unlimited time
         public DateTime End { get; set; }
@@ -21,7 +26,9 @@ namespace Domain.Entities
         public List<Customer> CustomersValidFor { get; set; }
         public List<Customer> CustomersUsedBy { get; set; }
 
-        //Max amount of times that a customer is allowed to use the coupon
+        /// <summary>
+        /// Max amount of times that a customer is allowed to use the coupon
+        /// </summary>
         public int UseLimit { get; set; }
 
         public bool CanBeCombined { get; set; }
