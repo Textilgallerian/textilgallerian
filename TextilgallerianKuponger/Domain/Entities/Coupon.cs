@@ -18,10 +18,17 @@ namespace Domain.Entities
         public String Code { get; set; }
 
         /// <summary>
+        /// Name of the Coupon type, needed for JSON serialization
+        /// </summary>
+        public String Type
+        {
+            get { return GetType().Name; }
+        }
+
+        /// <summary>
         /// When the coupon should start to be valid
         /// </summary>
         public DateTime Start { get; set; }
-        // End is set to null if Unlimited time
         
         /// <summary>
         /// When the coupon should end
@@ -40,9 +47,7 @@ namespace Domain.Entities
         /// </summary>
         public List<Customer> CustomersUsedBy { get; set; }
 
-        /// <summary>
-        /// Max amount of times that a customer is allowed to use the coupon
-        /// </summary>
+        //Max amount of times that a customer is allowed to use the coupon
         public int UseLimit { get; set; }
 
         /// <summary>
