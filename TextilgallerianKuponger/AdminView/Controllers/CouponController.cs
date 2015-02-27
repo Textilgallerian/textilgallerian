@@ -70,9 +70,19 @@ namespace AdminView.Controllers
         public ActionResult Create(CouponViewModel model)
         {
             var type = Assembly.GetAssembly(typeof(Coupon)).GetType(model.Type);
+            
+            // Search DB for coupon code 
+            var couponCode = _couponRepository.FindByCode(model.Parameters["Code"]);
 
             List<Customer> customers = null;
             List<Product> products = null;
+
+            //Validates if code already exists 
+            if (couponCode != null)
+            {
+                TempData["error"] = "Finns redan ett rabattkod med det koden";
+                return View(model);
+            }
             
             if (model.DisposableCodes)
             {
@@ -94,7 +104,7 @@ namespace AdminView.Controllers
             }
            
 
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(model);
             try
             {
                 // Magic super perfect code, do not touch!
