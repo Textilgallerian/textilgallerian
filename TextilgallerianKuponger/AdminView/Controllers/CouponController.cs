@@ -36,16 +36,15 @@ namespace AdminView.Controllers
         {
             var model = new PagedViewModel<Coupon>
             {
-                PagedObjects = _couponRepository.FindAllCoupons().OrderBy(c => c.CreatedAt).Page(page, 10),
+                PagedObjects = _couponRepository.FindAllCoupons().OrderBy(c => c.CreatedAt).Page(page - 1, PageSize),
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling(_couponRepository.FindAllCoupons().Count() / (double) PageSize)
             };
 
-            //// TestData for now
-                        //var tempCoupons = Testdata.RandomAmount(() => Testdata.RandomCoupon());
-            
-                        //tempCoupons.ForEach(_couponRepository.Store);
-                        //_couponRepository.SaveChanges();
+            // TestData for now
+            //var tempCoupons = Testdata.RandomAmount(() => Testdata.RandomCoupon());
+            //tempCoupons.ForEach(_couponRepository.Store);
+            //_couponRepository.SaveChanges();
 
             return View(model);
         }
@@ -75,7 +74,14 @@ namespace AdminView.Controllers
             List<Customer> customers = null;
             List<Product> products = null;
             
-            if (model.CustomerString != null)
+            if (model.DisposableCodes)
+            {
+                // There can't be both a campaign and disposable codes
+                model.Parameters["Code"] = null;
+
+                customers = _couponHelper.GenerateDispoableCodes(model.NumberOfCodes);
+            }
+            else if (model.CustomerString != null)
             {
                 var customerLines = model.CustomerString.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 customers = _couponHelper.GetCustomers(customerLines);
@@ -94,16 +100,24 @@ namespace AdminView.Controllers
                 // Magic super perfect code, do not touch!
                 var constructor = type.GetConstructor(new[] { typeof(IReadOnlyDictionary<String, String>) });
                 var coupon = constructor.Invoke(new object[] { model.Parameters }) as Coupon;
-                var user = (User)Session["user"];
+
+                var user = (User) Session["user"];
                 coupon.CreatedBy = user.Email;
+
                 coupon.CanBeCombined = model.CanBeCombined;
                 coupon.CustomersValidFor = customers;
                 coupon.Products = products;
                 coupon.IsActive = true;
                 coupon.CreatedAt = DateTime.Now;
+
                 _couponRepository.Store(coupon);
                 _couponRepository.SaveChanges();
+
                 TempData["success"] = "Rabatt sparad!";
+                if (model.DisposableCodes)
+                {
+                    return View("Codes", customers);
+                }
                 return RedirectToAction("Index");
             }
             catch (NullReferenceException)
@@ -115,7 +129,7 @@ namespace AdminView.Controllers
                 TempData["error"] = "Misslyckades att spara rabatten!";
             }
 
-            return View();
+            return View(model);
         }
 
         // GET: Coupon/Edit/5
@@ -125,7 +139,7 @@ namespace AdminView.Controllers
 
         {
             var coupon = _couponRepository.FindByCode(code);
-            var dictionary = coupon.EditCoupon();
+            var dictionary = coupon.GetProperties();
             var cvm = new CouponViewModel();
             cvm.Parameters = dictionary;
 
@@ -158,7 +172,7 @@ namespace AdminView.Controllers
             if (!ModelState.IsValid) return View();
             try
             {
-                coupon.SetValues(model.Parameters);
+                coupon.SetProperties(model.Parameters);
                 var user = (User)Session["user"];
                 coupon.CreatedBy = user.Email;
                 coupon.CanBeCombined = model.CanBeCombined;
