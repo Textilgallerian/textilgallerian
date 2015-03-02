@@ -155,7 +155,7 @@ namespace AdminView.Controllers
                 }
                 else
                 {
-                    TempData["success"] = "Användare sparad men roll kvarstår.";
+                    TempData["success"] = "Användare sparad men roll kvarstår eftersom att du inte kan ändra din egen roll.";
                 }
 
                 if (!String.IsNullOrWhiteSpace(model.Password))
