@@ -85,6 +85,7 @@ namespace AdminView.Tests.Steps
         {
             try
             {
+                Driver.PageSource.should_contain(button);
                 Driver.FindElement(
                 By.CssSelector(String.Format("input[type='submit'][value='{0}']", button)))
                 .Click();

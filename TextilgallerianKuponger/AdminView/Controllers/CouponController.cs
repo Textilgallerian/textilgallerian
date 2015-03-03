@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.ExtensionMethods;
 using AdminView.Controllers.Helpers;
+using System.Web.Http;
 
 namespace AdminView.Controllers
 {
@@ -79,8 +80,18 @@ namespace AdminView.Controllers
         [RequiredPermission(Permission.CanAddCoupons)]
         public ActionResult Create(CouponViewModel model)
         {
-            List<Customer> customers = null;
+            var type = Assembly.GetAssembly(typeof(Coupon)).GetType(model.Type);
             
+            // Search DB for coupon code 
+            var couponCode = _couponRepository.FindByCode(model.Parameters["Code"]);
+
+            //Validates if code already exists 
+            if (couponCode != null)
+            {
+                TempData["error"] = "Finns redan en rabattkod med den koden";
+                return View(model);
+            }
+            List<Customer> customers = null;
             if (model.DisposableCodes)
             {
                 // There can't be both a campaign and disposable codes
