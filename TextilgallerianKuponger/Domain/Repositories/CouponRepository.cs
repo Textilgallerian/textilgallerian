@@ -55,6 +55,8 @@ namespace Domain.Repositories
                 .FirstOrDefault(
                     coupon =>
                         coupon.CustomersValidFor.Any(
+                            customer => customer.CouponCode == code) ||
+                        coupon.CustomersUsedBy.Any(
                             customer => customer.CouponCode == code));
         }
 

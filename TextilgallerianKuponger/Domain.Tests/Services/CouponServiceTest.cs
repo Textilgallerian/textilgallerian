@@ -52,12 +52,12 @@ namespace Domain.Tests.Services
             }, true));
             repostitory.Store(Testdata.RandomCoupon(new ValidCoupon
             {
-                Code = "Valid Code with customer",
+                Name = "Valid Code with customer",
                 CustomersValidFor = new List<Customer> {_validCustomer}
             }, true));
             repostitory.Store(Testdata.RandomCoupon(new InvalidCoupon
             {
-                Code = "Valid Coupon"
+                Name = "Valid Coupon"
             }, true));
             repostitory.Store(Testdata.RandomCoupon(new InvalidCoupon
             {
@@ -66,7 +66,7 @@ namespace Domain.Tests.Services
 
             repostitory.Store(Testdata.RandomCoupon(new BuyProductXRecieveProductY
             {
-                Code = "free product",
+                Name = "free product",
                 CustomersValidFor = new List<Customer>
                 {
                     _cart.Customer,
@@ -80,7 +80,7 @@ namespace Domain.Tests.Services
             }, true));
             repostitory.Store(Testdata.RandomCoupon(new BuyProductXRecieveProductY
             {
-                Code = "Free but uncombineable product",
+                Name = "Free but uncombineable product",
                 CustomersValidFor = new List<Customer> {_cart.Customer},
                 Products = new List<Product> {_cart.Rows.First().Product},
                 Buy = 1,
@@ -91,7 +91,7 @@ namespace Domain.Tests.Services
 
             repostitory.Store(Testdata.RandomCoupon(_percentageCoupon = new TotalSumPercentageDiscount
             {
-                Code = "20%",
+                Name = "20%",
                 CustomersValidFor = new List<Customer> {_cart.Customer},
                 Percentage = 0.2m,
                 Start = DateTime.Now,
@@ -99,8 +99,17 @@ namespace Domain.Tests.Services
             }, true));
             repostitory.Store(Testdata.RandomCoupon(new BuyXProductsPayForYProducts
             {
-                Code = "3 for 2",
+                Name = "3 for 2",
                 Products = new List<Product> {_cart.Rows.First().Product},
+                Buy = 3,
+                PayFor = 2,
+                Start = DateTime.Now,
+                UseLimit = 1000
+            }, false, true));
+            repostitory.Store(Testdata.RandomCoupon(new BuyXProductsPayForYProducts
+            {
+                Code = "3 for 2",
+                Products = new List<Product> { _cart.Rows.First().Product },
                 Buy = 3,
                 PayFor = 2,
                 Start = DateTime.Now,
@@ -135,7 +144,7 @@ namespace Domain.Tests.Services
             var result = _couponService.FindBestCouponsForCart(cart).Discounts;
 
             result.Count.should_be(1);
-            result[0].Code.should_be("free product");
+            result[0].Name.should_be("free product");
         }
 
         [TestMethod]
@@ -216,8 +225,8 @@ namespace Domain.Tests.Services
 
             // We only want 2 discounts and 2 rows as the other "free product" coupon isn't combinable
             result.Discounts.Count.should_be(2);
-            result.Discounts[0].Code.should_be("free product");
-            result.Discounts[1].Code.should_be("20%");
+            result.Discounts[0].Name.should_be("free product");
+            result.Discounts[1].Name.should_be("20%");
             result.Rows.Count.should_be(2);
             result.Rows[1].Product.should_be(_freeProduct);
         }

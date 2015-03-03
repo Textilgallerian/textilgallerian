@@ -25,7 +25,7 @@ namespace Domain.Entities
         {
             return new Dictionary<String, String>
             {
-                {"Name", Name },
+                {"Name", Name},
                 {"Code",  Code},
                 {"Description", Description},
                 {"Start", Start.ToString("yyyy-MM-dd")},
@@ -112,6 +112,7 @@ namespace Domain.Entities
         /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
         ///     Products valid for this discount
         /// </summary>
         public List<Product> Products { get; set; }
@@ -134,8 +135,27 @@ namespace Domain.Entities
         // TODO: Needs refactoring and tests
         public virtual Boolean IsValidFor(Cart cart)
         {
+<<<<<<< HEAD
             //not valid if End date has not passed, or if the minimum purchase limit has not been reached.
             if ((End.HasValue && End.Value < DateTime.Now) || MinPurchase > cart.TotalSum)
+=======
+            if (!IsActive)
+            {
+                return false;
+            }
+
+            if (Code != null && Code != cart.CouponCode)
+            {
+                return false;
+            }
+
+            if (End.HasValue && End.Value < DateTime.Now)
+            {
+                return false;
+            }
+
+            if (MinPurchase > cart.TotalSum)
+>>>>>>> fix(Domain): Fixes domain logic; tested by calling API
             {
                 return false;
             }
