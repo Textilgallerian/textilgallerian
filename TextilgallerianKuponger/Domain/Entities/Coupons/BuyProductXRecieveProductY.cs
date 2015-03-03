@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Domain.Entities
 {
@@ -8,6 +9,13 @@ namespace Domain.Entities
     /// </summary>
     public class BuyProductXRecieveProductY : Coupon
     {
+
+        public BuyProductXRecieveProductY()
+        {
+        }
+        
+
+        //public BuyProductXRecieveProductY(IReadOnlyDictionary<string, string> properties) : base(properties)
         public BuyProductXRecieveProductY(IReadOnlyDictionary<string, string> properties)
         {
             SetProperties(properties);
@@ -16,21 +24,23 @@ namespace Domain.Entities
         public override void SetProperties(IReadOnlyDictionary<string, string> properties)
         {
             base.SetProperties(properties);
-            Amount = Decimal.Parse(properties["Amount"]);
-            Buy = Decimal.Parse(properties["Buy"]);
+            AmountOfProducts = Decimal.Parse(properties["AmountOfProducts"], CultureInfo.InvariantCulture);
+            Buy = Decimal.Parse(properties["Buy"], CultureInfo.InvariantCulture);
+            //TODO: Check if "FreeProduct" is valid!!
+            FreeProduct = new Product { ProductId = properties["FreeProduct"]};
+
         }
 
-        public BuyProductXRecieveProductY()
-        {
-        }
+    
 
         public override Dictionary<string, string> GetProperties()
         {
             var dictionary = base.GetProperties();
-            dictionary.Add("Amount", Amount.ToString());
-            dictionary.Add("Buy", Buy.ToString());
+            dictionary.Add("AmountOfProducts", AmountOfProducts.ToString(CultureInfo.InvariantCulture));
+            dictionary.Add("Buy", Buy.ToString(CultureInfo.InvariantCulture));
             dictionary.Add("FreeProduct", FreeProduct.ProductId);
             dictionary.Add("ProductName", FreeProduct.Name);
+
             return dictionary;
         }
 
@@ -42,7 +52,7 @@ namespace Domain.Entities
         /// <summary>
         ///     How many free products
         /// </summary>
-        public Decimal Amount { get; set; }
+        public Decimal AmountOfProducts { get; set; }
 
         ///// <summary>
         /////     How many products customer need to buy
@@ -57,7 +67,7 @@ namespace Domain.Entities
         {
             cart.Rows.Add(new Row
             {
-                Amount = Amount,
+                Amount = AmountOfProducts,
                 Product = FreeProduct,
                 ProductPrice = 0
             });

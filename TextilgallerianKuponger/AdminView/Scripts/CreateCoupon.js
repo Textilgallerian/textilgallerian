@@ -1,4 +1,5 @@
 ﻿window.addEventListener('load', function () {
+   
     var dropdown = document.querySelector('.type');
     var disposable = document.querySelector('.disposable');
     var specificFields = document.querySelectorAll('.specific-field');
@@ -11,14 +12,25 @@
 
         Array.prototype.forEach.call(specificFields, function (field) {
             if (!field.classList.contains(type)) {
+                var input = field.querySelector('input');
+                if (input.getAttribute('required')) {
+                    input.setAttribute('should-be-required', 'required');
+                    input.removeAttribute('required');
+                }
                 field.hidden = true;
             }
         });
+    
 
         var currentFields = document.getElementsByClassName(type);
 
         Array.prototype.forEach.call(currentFields, function (field) {
             field.hidden = false;
+            var input = field.querySelector('input');
+            if (input.getAttribute('should-be-required')) {
+                input.setAttribute('required', 'required');
+                input.removeAttribute('should-be-required');
+            }
         });
 
         Array.prototype.forEach.call(campaignFields, function (field) {
@@ -35,3 +47,28 @@
 
     showCorrectFields();
 });
+
+
+var usercontent = [];
+function userSearch() {
+    $("#user-search").search({
+        source: usercontent,
+        searchFullText: false,
+        cache: false
+    });
+}
+$("#userinput").click(function () {
+    usercontent = [];
+    var users = jQuery("textarea#users").val();
+    users = users.split("\n");
+    usercontent = usercontent.concat(users);
+    for (var i = 0; i < usercontent.length; i++) {
+        usercontent[i] = { title: usercontent[i] };
+    }
+    userSearch();
+});
+
+
+
+
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Linq;
+using System.Globalization;
 
 namespace Domain.Entities
 {
@@ -18,15 +19,15 @@ namespace Domain.Entities
         public override void SetProperties(IReadOnlyDictionary<string, string> properties)
         {
             base.SetProperties(properties);
-            PayFor = Decimal.Parse(properties["PayFor"]);
-            Buy = Decimal.Parse(properties["Buy"]);
+            PayFor = Decimal.Parse(properties["PayFor"], CultureInfo.InvariantCulture);
+            Buy = Decimal.Parse(properties["Buy"], CultureInfo.InvariantCulture);
         }
 
         public override Dictionary<string, string> GetProperties() 
         {
             var dictionary = base.GetProperties();
-            dictionary.Add("PayFor", PayFor.ToString());
-            dictionary.Add("Buy", Buy.ToString());
+            dictionary.Add("PayFor", PayFor.ToString(CultureInfo.InvariantCulture));
+            dictionary.Add("Buy", Buy.ToString(CultureInfo.InvariantCulture));
 
             return dictionary;
         }

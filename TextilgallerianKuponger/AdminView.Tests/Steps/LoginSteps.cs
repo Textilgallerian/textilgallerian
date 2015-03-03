@@ -26,6 +26,7 @@ namespace AdminView.Tests.Steps
         [Then(@"I should be logged in")]
         public void ThenIShouldBeLoggedIn()
         {
+            ThenTheSystemShouldPresent("Logga ut");
             Driver.FindElement(By.LinkText("Logga ut"));
         }
 
