@@ -130,10 +130,6 @@ namespace Domain.Entities
         // TODO: Needs refactoring and tests
         public virtual Boolean IsValidFor(Cart cart)
         {
-<<<<<<< HEAD
-            //not valid if End date has not passed, or if the minimum purchase limit has not been reached.
-            if ((End.HasValue && End.Value < DateTime.Now) || MinPurchase > cart.TotalSum)
-=======
             if (!IsActive)
             {
                 return false;
@@ -150,7 +146,6 @@ namespace Domain.Entities
             }
 
             if (MinPurchase > cart.TotalSum)
->>>>>>> fix(Domain): Fixes domain logic; tested by calling API
             {
                 return false;
             }
