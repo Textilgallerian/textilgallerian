@@ -1,4 +1,4 @@
-﻿@using System.Collections.Concurrent
+﻿﻿@using System.Collections.Concurrent
 @using AdminView.ViewModel
 @model CouponViewModel
 
@@ -29,10 +29,16 @@
                 </label>
             </div>
 
-            <div class="field">
+        <div class="field">
+            <label>
+                Generera engångskoder
+                @Html.CheckBoxFor(m => m.DisposableCodes, new {@class = "disposable"})
+            </label>
+        </div>
+            <div class="field disposable-codes">
                 <label>
-                    Generera engångskoder
-                    @Html.CheckBoxFor(m => m.DisposableCodes, new { @class = "disposable" })
+                    Hur många engångskoder ska genereras?
+                    @Html.TextBoxFor(m => m.NumberOfCodes, new { type = "number", min = 0 })
                 </label>
             </div>
             <div class="field campaign-code">
@@ -41,7 +47,7 @@
                     @Html.TextBoxFor(m => m.Parameters["Code"], new { required = "required " })
                 </label>
             </div>
-          
+
 
             <div class="field">
                 <label>
@@ -135,131 +141,111 @@
                 </div>
             </div>
             <div class="ui hidden divider"></div>
-<<<<<<< HEAD
-            <div class="field">
-                <label>
-                    Hur många gånger får rabatten användas?
-                    @Html.TextBoxFor(m => m.Parameters["UseLimit"], new { type = "number", min = 0 })
-                </label>
-                <div class="help">
-                    Hur många gånger rabatten  får användas av samma kund eller hur många gånger samma kod får användas
-                </div>
-            </div>
-            <div class="field">
-                <label>
-                    Ange hur många produkter kund behöver köpa
-                    @Html.TextBoxFor(m => m.Parameters["NumberOfProductsToBuy"], new { type = "number", min = 0, @Value = 0, required = "required " })
-                </label>
-                <div class="help">
-                    T.ex. 3 i tag 3 betala för 2
-=======
-
-        <div class="field specific-field TotalSumAmountDiscount">
-            <div class="ui corner labeled input">
-                @Html.TextBoxFor(m => m.Parameters["Amount"], new { type = "number", min = 0, placeholder = "T.ex. 300", required = "required " })
-                <div class="ui corner label">
-                    <i class="icon">KR</i>
->>>>>>> simplifiedview
-                </div>
-                <div class="help">
-                   Hur står summa i kronor som rabatten ska medföra
-                </div>
-            </div>
-        </div>
-            <div class="field specific-field BuyProductXRecieveProductY">
-                <label>
-                    Antal gratis produkter
-                    @Html.TextBoxFor(m => m.Parameters["AmountOfProducts"], new { type = "number", min = 0, placeholder = "Antal gratis produkter", required = "required " })
-                </label>
-            </div>
-        <div class="field specific-field BuyProductXRecieveProductY">
-            <div class="ui two column grid">
-                <div class="column">
-                    Vilken produkt?
-                    @Html.TextBoxFor(m => m.Parameters["FreeProduct"], new {required = "required ", id = "free-product"})
-                </div>
-                <div class="column">
-                    <br/>
-
-                    <div class="ui category search " id="free-product-search">
-                        <div class="ui icon input bottom pointing">
-                            <input class="prompt" type="text" id="productInput" placeholder="Sök produkter..">
-                            <i class="search icon" id="free-product"></i>
+                    <div class="field specific-field TotalSumAmountDiscount">
+                        <div class="ui corner labeled input">
+                            @Html.TextBoxFor(m => m.Parameters["Amount"], new { type = "number", min = 0, placeholder = "T.ex. 300", required = "required " })
+                            <div class="ui corner label">
+                                <i class="icon">KR</i>
+                            </div>
+                            <div class="help">
+                                Hur står summa i kronor som rabatten ska medföra
+                            </div>
                         </div>
-                        <div class="results"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui two column grid">
-            <div class="column">
-                <div class="field specific-field BuyProductXRecieveProductY BuyXProductsPayForYProducts">
-                    <label>
-                        Antal produkter som krävs
-                        @Html.TextBoxFor(m => m.Parameters["Buy"], new {type = "number", min = 0, placeholder = "Ange hur många produkter kund behöver köpa", required = "required "})
-                    </label>
-                    <div class="help">
-                        T.ex. Köp 3 varor för att rabatten ska gälla
+                    <div class="field specific-field BuyProductXRecieveProductY">
+                        <label>
+                            Antal gratis produkter
+                            @Html.TextBoxFor(m => m.Parameters["AmountOfProducts"], new { type = "number", min = 0, placeholder = "Antal gratis produkter", required = "required " })
+                        </label>
                     </div>
-                </div>
-            </div>
-            <div class="column">
-                <div class="field specific-field BuyXProductsPayForYProducts">
-                    <label>
-                        Betala för
-                        @Html.TextBoxFor(m => m.Parameters["PayFor"], new {type = "number", min = 0, placeholder = "Ange hur många produkter kund behöver betala för", required = "required "})
-                    </label>
-                    <div class="help">
-                        T.ex. Vid köp av 3 varor så ska detta antal betalas för
-                    </div>
-                </div>
-            </div>
-            <div class="ui hidden divider"></div>
-        </div>
-        <div class="field specific-field TotalSumPercentageDiscount">
-            <div class="ui two column grid">
-                <div class="column">
-                    <div class="ui corner labeled input">
-                        @Html.TextBoxFor(m => m.Parameters["Percentage"], new { type = "number", min = 0, max = 100, required = "required ", placeholder = "T.ex. 30" })
-                        <div class="ui corner label">
-                            <i class="icon">%</i>
+                    <div class="field specific-field BuyProductXRecieveProductY">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                Vilken produkt?
+                                @Html.TextBoxFor(m => m.Parameters["FreeProduct"], new { required = "required ", id = "free-product" })
+                            </div>
+                            <div class="column">
+                                <br />
+
+                                <div class="ui category search " id="free-product-search">
+                                    <div class="ui icon input bottom pointing">
+                                        <input class="prompt" type="text" id="productInput" placeholder="Sök produkter..">
+                                        <i class="search icon" id="free-product"></i>
+                                    </div>
+                                    <div class="results"></div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="ui two column grid">
+                        <div class="column">
+                            <div class="field specific-field BuyProductXRecieveProductY BuyXProductsPayForYProducts">
+                                <label>
+                                    Antal produkter som krävs
+                                    @Html.TextBoxFor(m => m.Parameters["Buy"], new { type = "number", min = 0, placeholder = "Ange hur många produkter kund behöver köpa", required = "required " })
+                                </label>
+                                <div class="help">
+                                    T.ex. Köp 3 varor för att rabatten ska gälla
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field specific-field BuyXProductsPayForYProducts">
+                                <label>
+                                    Betala för
+                                    @Html.TextBoxFor(m => m.Parameters["PayFor"], new { type = "number", min = 0, placeholder = "Ange hur många produkter kund behöver betala för", required = "required " })
+                                </label>
+                                <div class="help">
+                                    T.ex. Vid köp av 3 varor så ska detta antal betalas för
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui hidden divider"></div>
+                    </div>
+                    <div class="field specific-field TotalSumPercentageDiscount">
+                        <div class="ui two column grid">
+                            <div class="column">
+                                <div class="ui corner labeled input">
+                                    @Html.TextBoxFor(m => m.Parameters["Percentage"], new { type = "number", min = 0, max = 100, required = "required ", placeholder = "T.ex. 30" })
+                                    <div class="ui corner label">
+                                        <i class="icon">%</i>
+                                    </div>
+                                    <div class="help">
+                                        Välj många stor procentuell summa som ska gälla för denna rabatt
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="ui right labeled icon input">
+                                    @Html.TextBoxFor(m => m.Parameters["UseLimit"], new { type = "number", min = 0, placeholder = "  Hur många gånger får rabatten användas?" })
+                                    <div class="ui tag label">
+                                        Antal gånger
+                                    </div>
+                                </div>
+                                <div class="help">
+                                    Hur många gånger rabatten får användas av samma kund eller hur många gånger samma kod får användas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field specific-field TotalSumPercentageDiscount">
+                        <label>
+                            Procenten gäller endast för specificerade produkter, märken och/eller kategorier.
+                            @Html.CheckBoxFor(m => m.PercentageDiscountOnlyOnSpecifiedProducts)
+                        </label>
                         <div class="help">
-                            Välj många stor procentuell summa som ska gälla för denna rabatt
+                            Om rutan lämnas tom kommer procenten att beräknas på hela varukorgen.
                         </div>
                     </div>
-                </div>
-                <div class="column">
-                    <div class="ui right labeled icon input">
-                        @Html.TextBoxFor(m => m.Parameters["UseLimit"], new { type = "number", min = 0, placeholder = "  Hur många gånger får rabatten användas?" })
-                        <div class="ui tag label">
-                            Antal gånger
-                        </div>
-                    </div>
-                    <div class="help">
-                        Hur många gånger rabatten får användas av samma kund eller hur många gånger samma kod får användas
-                    </div>
-                </div>
-            </div>
-        </div>
-            <div class="field specific-field TotalSumPercentageDiscount">
-                <label>
-                    Procenten gäller endast för specificerade produkter, märken och/eller kategorier.
-                    @Html.CheckBoxFor(m => m.PercentageDiscountOnlyOnSpecifiedProducts)
-                </label>
-                <div class="help">
-                    Om rutan lämnas tom kommer procenten att beräknas på hela varukorgen.
-                </div>
-            </div>
 
-            <div class="field">
-                <label>
-                    Kampanjen kan kombineras med andra kampanjer.
-                    @Html.CheckBoxFor(m => m.CanBeCombined)
-                </label>
-            </div>
-     
-            <input type="submit" name="name" class="ui button green" value="Skapa rabatt" />
+                    <div class="field">
+                        <label>
+                            Kampanjen kan kombineras med andra kampanjer.
+                            @Html.CheckBoxFor(m => m.CanBeCombined)
+                        </label>
+                    </div>
+
+                    <input type="submit" name="name" class="ui button green" value="Skapa rabatt" />
         </form>
     </div>
 </div>
