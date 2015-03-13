@@ -96,6 +96,7 @@ namespace AdminView.Tests.Steps
         {
             try
             {
+                Driver.FindElement(By.Name(field)).Clear();
                 Driver.FindElement(By.Name(field)).SendKeys(value);
             }
             catch (NoSuchElementException)
