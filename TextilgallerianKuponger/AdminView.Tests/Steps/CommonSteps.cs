@@ -99,12 +99,18 @@ namespace AdminView.Tests.Steps
                 Driver.FindElement(By.Name(field)).Clear();
                 Driver.FindElement(By.Name(field)).SendKeys(value);
             }
-            catch (NoSuchElementException)
-            {
-                field = String.Format("Parameters[{0}]", field);
-                Driver.PageSource.should_contain(field);
-                Driver.FindElement(By.Name(field)).Clear();
-                Driver.FindElement(By.Name(field)).SendKeys(value);
+            catch (Exception e)
+            { 
+                if (e is NoSuchElementException || e is InvalidElementStateException)  {
+                    field = String.Format("Parameters[{0}]", field);
+                    Driver.PageSource.should_contain(field);
+                    Driver.FindElement(By.Name(field)).Clear();
+                    Driver.FindElement(By.Name(field)).SendKeys(value);
+                }
+                else
+                {
+                    throw e;
+                }
             }
         }
     }
