@@ -103,6 +103,7 @@ namespace AdminView.Tests.Steps
             {
                 field = String.Format("Parameters[{0}]", field);
                 Driver.PageSource.should_contain(field);
+                Driver.FindElement(By.Name(field)).Clear();
                 Driver.FindElement(By.Name(field)).SendKeys(value);
             }
         }
