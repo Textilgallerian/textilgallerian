@@ -27,5 +27,6 @@ namespace AdminView.ViewModel
         public Boolean DisposableCodes { get; set; }
         public int NumberOfCodes { get; set; }
         public Boolean PercentageDiscountOnWholeCart { get; set; }
+        public String DefaultCode { get; set; }
     }
 }
