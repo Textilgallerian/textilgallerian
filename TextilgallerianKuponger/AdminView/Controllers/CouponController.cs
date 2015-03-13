@@ -73,7 +73,9 @@ namespace AdminView.Controllers
         [RequiredPermission(Permission.CanAddCoupons)]
         public ActionResult Create()
         {
-            return View(new CouponViewModel());
+            //Random Code by default in create view
+            return View(new CouponViewModel(){ DefaultCode = _couponHelper.RandomString(10) });
+
         }
 
         // POST: Coupon/Create

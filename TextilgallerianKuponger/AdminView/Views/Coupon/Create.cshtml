@@ -38,7 +38,7 @@
             <div class="field campaign-code">
                 <label>
                     Kampanjkod
-                    @Html.TextBoxFor(m => m.Parameters["Code"], new { required = "required " })
+                    @Html.TextBoxFor(m => m.Parameters["Code"], new { required = "required ", @Value = Model.DefaultCode })
                 </label>
             </div>
             <div class="field disposable-codes">
@@ -127,16 +127,20 @@
             </div>
             <div class="ui two column grid">
                 <div class="column">
-                    <label>
-                        Startdatum:
-                        @Html.TextBoxFor(m => m.Parameters["Start"], new { type = "date", required = "required " })
-                    </label>
+                    <div class="field">
+                        <label>
+                            Startdatum:
+                            @Html.TextBoxFor(m => m.Parameters["Start"], new { type = "date", required = "required", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                        </label>
+                    </div>
                 </div>
                 <div class="column">
-                    <label>
-                        Slutdatum:
-                        @Html.TextBoxFor(m => m.Parameters["End"], new { type = "date" })
-                    </label>
+                    <div class="field">
+                        <label>
+                            Slutdatum:
+                            @Html.TextBoxFor(m => m.Parameters["End"], new { type = "date" })
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="ui hidden divider"></div>
@@ -182,8 +186,10 @@
             <div class="field specific-field BuyProductXRecieveProductY">
                 <div class="ui two column grid">
                     <div class="column">
-                        Vilken produkt?
-                        @Html.TextBoxFor(m => m.Parameters["FreeProduct"], new { required = "required ", id = "free-product" })
+                        <div class="field">
+                            <label>Vilken produkt får kunden gratis?</label>
+                            @Html.TextBoxFor(m => m.Parameters["FreeProduct"], new { required = "required ", id = "free-product" })
+                        </div>
                     </div>
                     <div class="column">
                         <br/>
@@ -209,14 +215,14 @@
             </div>
             <div class="field specific-field TotalSumPercentageDiscount">
                 <label>
-                    Procenten gäller för hela kundvagnen.
+                    Procenten gäller för hela kundvagnen:
                     @Html.CheckBoxFor(m => m.PercentageDiscountOnWholeCart)
                 </label>
             </div>
 
             <div class="field">
                 <label>
-                    Kampanjen kan kombineras med andra kampanjer.
+                    Kampanjen kan kombineras med andra kampanjer:
                     @Html.CheckBoxFor(m => m.CanBeCombined)
                 </label>
             </div>
